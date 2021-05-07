@@ -15,6 +15,8 @@ from random import *
 from turtle import *
 from freegames import path
 
+writer = Turtle(visible=False)
+numtaps = 0
 car = path('car.gif')
 tiles = list() # Cambiado lista de letras a una lista de numeros
 for y in range(2): # Comando que convierte las letras al codigo ASCII
@@ -38,12 +40,16 @@ def square(x, y):
 def index(x, y):
     "Convert (x, y) coordinates to tiles index."
     return int((x + 200) // 50 + ((y + 200) // 50) * 8) # Revisa comentario linea 43
+    
 
 def xy(count):
     "Convert tiles count to (x, y) coordinates."
     return (count % 8) * 50 - 200, (count // 8) * 50 - 200 #Cambia los 8 por las tiles que quieres
 
+
 def tap(x, y):
+    global numtaps
+    numtaps = numtaps + 1
     "Update mark and hidden tiles based on tap."
     spot = index(x, y)
     mark = state['mark']
@@ -54,6 +60,10 @@ def tap(x, y):
         hide[spot] = False
         hide[mark] = False
         state['mark'] = None
+    writer.undo()
+    writer.goto(160, 0)
+    writer.color('green')
+    writer.write(numtaps, font=('Arial', 30, 'normal'))
 
 def draw():
     "Draw image and tiles."
@@ -73,10 +83,11 @@ def draw():
         x, y = xy(mark)
         up()
         goto(x + 11, y) # Creado un offset de 11, para dibujar cosas relativamente centradas
-        color('black')
+        color('blue')
         write(tiles[mark], font=('Arial', 30, 'normal'))
 
     update()
+    
     ontimer(draw, 100)
 
 shuffle(tiles)
