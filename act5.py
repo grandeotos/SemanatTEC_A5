@@ -3,7 +3,7 @@
 Exercises:
 
 1. Count and print how many taps occur.
-2. Decrease the number of tiles to a 4x4 grid.
+2. Decrease the n//umber of tiles to a 4x4 grid.
 3. Detect when all tiles are revealed.
 4. Center single-digit tile.
 5. Use letters instead of tiles.
@@ -15,9 +15,12 @@ from turtle import *
 from freegames import path
 
 car = path('car.gif')
-tiles = list(range(32)) * 2
+tiles = list() # Cambiado lista de letras a una lista de numeros
+for y in range(2): # Comando que convierte las letras al codigo ASCII
+    for x in range(32): # Con este for, puedes cambiar el numero de X * X letras a la lista
+        tiles.append(chr(59+x))
 state = {'mark': None}
-hide = [True] * 64
+hide = [True] * 64 # Necesitas cambiar esto tambien para X * X
 
 def square(x, y):
     "Draw white square with black outline at (x, y)."
@@ -33,11 +36,11 @@ def square(x, y):
 
 def index(x, y):
     "Convert (x, y) coordinates to tiles index."
-    return int((x + 200) // 50 + ((y + 200) // 50) * 8)
+    return int((x + 200) // 50 + ((y + 200) // 50) * 8) # Revisa comentario linea 43
 
 def xy(count):
     "Convert tiles count to (x, y) coordinates."
-    return (count % 8) * 50 - 200, (count // 8) * 50 - 200
+    return (count % 8) * 50 - 200, (count // 8) * 50 - 200 #Cambia los 8 por las tiles que quieres
 
 def tap(x, y):
     "Update mark and hidden tiles based on tap."
@@ -58,7 +61,7 @@ def draw():
     shape(car)
     stamp()
 
-    for count in range(64):
+    for count in range(64): # Tambien esto para X * X
         if hide[count]:
             x, y = xy(count)
             square(x, y)
@@ -68,7 +71,7 @@ def draw():
     if mark is not None and hide[mark]:
         x, y = xy(mark)
         up()
-        goto(x + 2, y)
+        goto(x + 11, y) # Creado un offset de 11, para dibujar cosas relativamente centradas
         color('black')
         write(tiles[mark], font=('Arial', 30, 'normal'))
 
